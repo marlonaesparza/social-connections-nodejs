@@ -18,8 +18,8 @@ app.use(express.urlencoded({ extended: true}));
 app.use(express.json());
 
 
-app.use('/connection', connectionRouter);
-app.use('/connection', requestRouter);
+app.use('/connections', connectionRouter);
+app.use('/requests', requestRouter);
 
 
 app.listen(port, () => {

@@ -1,23 +1,62 @@
 const Connection = require('../../database/models/connection');
+const RequestDAO = require('../dao/request');
+const { Op } = require('sequelize');
 
 
 class ConnectionDAO {
   constructor() {
+    this.getAllConnections = this.getAllConnections.bind(this);
+    this.findOneConnection = this.findOneConnection.bind(this);
     this.createConnection = this.createConnection.bind(this);
     this.deleteConnection = this.deleteConnection.bind(this);
-    this.getAllConnections = this.getAllConnections.bind(this);
   };
 
-  getAllConnections({ pUUID, rUUID }) {
+  getAllConnections({ aUUID, rUUID }) {
     //
   };
 
-  createConnection({ pUUID, rUUID }) {
-    //
+  findOneConnection({ aUUID, rUUID }) {
+    return Connection.findOne({
+      where: {
+        [Op.or]: [
+          {
+            aUUID: aUUID,
+            rUUID: rUUID
+          },
+          {
+            aUUID: rUUID,
+            rUUID: aUUID
+          }
+        ]
+      }
+    })
   };
 
-  deleteConnection({ pUUID, rUUID }) {
-    //
+  createConnection({ aUUID, rUUID }) {
+    return RequestDAO.deleteRequest({ aUUID, rUUID})
+      .then((result) => {
+        if (!result) {
+          throw result;
+        }
+        return Connection.create({ aUUID, rUUID })
+      })
+  };
+
+  deleteConnection({ aUUID, rUUID }) {
+    return Connection.destroy({ 
+      where: {
+        [Op.or]: [
+          {
+            aUUID: aUUID,
+            rUUID: rUUID
+          },
+          {
+            aUUID: rUUID,
+            rUUID: aUUID
+          }
+        ]
+      }
+    });
   };
 };
 

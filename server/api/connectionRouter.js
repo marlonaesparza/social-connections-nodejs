@@ -2,16 +2,16 @@ const router = require('express').Router();
 const ConnectionBusiness = require('./../business/connection');
 
 
-router.get('/all', (req, res) => {
-  return ConnectionBusiness.getAllPosts(req, res);
-});
+router.get('/connectionStatus', (req,res) => {
+  return ConnectionBusiness.getConnectionStatus(req, res);
+})
 
 router.post('/create', (req, res) => {
-  return ConnectionBusiness.createPost(req, res);
+  return ConnectionBusiness.createConnection(req, res);
 });
 
 router.delete('/delete', (req, res) => {
-  return ConnectionBusiness.deletePost(req, res);
+  return ConnectionBusiness.deleteConnection(req, res);
 });
 
 

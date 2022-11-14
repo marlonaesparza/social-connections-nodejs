@@ -1,5 +1,6 @@
 const sequelize = require('sequelize');
 
+
 const connection = new sequelize.Sequelize(
   `${process.env.DB_NAME}`, `${process.env.DB_USER}`, `${process.env.DB_PASSWORD}`, {
   host: 'localhost',
@@ -15,6 +16,7 @@ connection.authenticate()
     console.log(error);
     return;
   });
+
 
 module.exports = {
   sequelize,
