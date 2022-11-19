@@ -11,8 +11,32 @@ class ConnectionDAO {
     this.deleteConnection = this.deleteConnection.bind(this);
   };
 
-  getAllConnections({ aUUID, rUUID }) {
-    //
+  getAllConnections(uuid) {
+    return Connection.findAll({
+      where: {
+        [Op.or]: [
+          { aUUID: uuid },
+          { rUUID: uuid }
+        ]
+      }
+    })
+      .then(results => {
+        console.log('DAO Get All Connections (results):', results);
+        const connections = results.map(({ dataValues }) => {
+          if (dataValues.aUUID === uuid) {
+            return dataValues.rUUID;
+
+          } else if (dataValues.rUUID === uuid) {
+            return dataValues.aUUID;
+          };
+        });
+
+        return connections;
+      })
+      .catch(error => {
+        console.log('DAO Get All Connections (error):', error);
+        return;
+      })
   };
 
   findOneConnection({ aUUID, rUUID }) {

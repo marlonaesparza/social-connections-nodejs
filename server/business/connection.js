@@ -10,9 +10,28 @@ class ConnectionBusiness {
     this.deleteConnection = this.deleteConnection.bind(this);
   }
 
+  //-----------------------------------------------------------
+  /*
+    GET ALL CONNECTIONS
+
+    SUMMARY
+      - Gets all uuids for all connections.
+
+    PARAMS
+      - uuid = the uuid of user sending request
+  */
   getAllConnections(req, res) {
-    //
+    return ConnectionDAO.getAllConnections(req.query.uuid)
+      .then(connections => {
+        console.log('BUSINESS Get All Connections (results):', connections);
+        return res.status(200).send(connections);
+      })
+      .catch(error => {
+        return res.status(400).send();
+      });
   };
+
+  //-----------------------------------------------------------
 
   //-----------------------------------------------------------
   /*
